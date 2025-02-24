@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet"> <!-- Modern font -->
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #001600, #003300); /* Deep dark green gradient */
+            color: #ffffff;
+            text-align: center; /* Center-align all text */
+        }
+        h1 {
+            font-size: 48px; /* Larger heading for emphasis */
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        h2 {
+            font-size: 24px; /* Appropriate size for subheadings */
+            margin: 10px 0;
+            font-weight: 500; /* Medium weight for subheadings */
+        }
+        form {
+            background-color: rgba(20, 30, 20, 0.9); /* More opaque form background */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            width: 350px; /* Adjusted width for modern look */
+            display: flex;
+            flex-direction: column; /* Stack form elements vertically */
+            gap: 15px; /* Space between form elements */
+        }
+        label {
+            font-size: 18px; /* Slightly smaller and lighter labels */
+            font-weight: 500; /* Medium weight for labels */
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333; /* Dark gray background for input */
+            color: #ffffff;
+            font-size: 16px; /* Adjust font size for readability */
+            transition: background-color 0.3s; /* Transition for input background */
+        }
+        input[type="text"]:focus {
+            background-color: #444; /* Lighter gray on focus */
+            outline: none; /* Remove outline for modern style */
+        }
+        button {
+            background-color: #28a745; /* Bright green button */
+            color: #ffffff;
+            border: none;
+            padding: 12px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 500; /* Medium weight for buttons */
+            transition: background-color 0.3s, transform 0.2s; /* Transitions for button */
+        }
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: scale(1.05); /* Slightly enlarges the button on hover */
+        }
+        p {
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Downloader</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="url">Enter YouTube URL:</label>
+        <input type="text" id="url" name="url" placeholder="https://www.youtube.com/watch?v=example" required>
+        <button type="submit" name="download">Download</button>
+    </form>
+    
+    {% if result %}
+        <p>{{ result }}</p>
+    {% endif %}
+
+    {% if video_path %}
+        <h2>Once the download is complete, you can convert it to MP3 if you want.</h2>
+        <h2>Downloaded Video</h2>
+        <p>Video Path: {{ video_path }}</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="convert">Convert to MP3</button>
+        </form>
+        {% if converted_message %}
+            <p>{{ converted_message }}</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
